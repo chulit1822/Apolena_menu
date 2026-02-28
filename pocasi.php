@@ -185,15 +185,29 @@ function fmtWind(w){
     el.textContent = text;
   }
 
-  async function run(){
-    const url = `pocasi_data.php?lang=${encodeURIComponent(LANG)}`;
-    const res = await fetch(url, {cache:"no-store"});
-    const data = await res.json();
+async function run(){
+  const url = `objekty/cache/pocasi_${LANG}.json`;
+  const res = await fetch(url, { cache: "no-store" });
 
-    if(data.error){
-      showStatus("err", `${I18N.errPrefix} ${data.detail || data.error}`);
-      return;
-    }
+  if (!res.ok) {
+    showStatus("err", `${I18N.errPrefix} HTTP ${res.status} (${url})`);
+    return;
+  }
+
+  let data;
+  try {
+    data = await res.json();
+  } catch (e) {
+    const txt = await res.text();
+    showStatus("err", `${I18N.errPrefix} Neplatný JSON: ${txt.slice(0,120)}`);
+    return;
+  }
+
+  if (data.error) {
+    showStatus("err", `${I18N.errPrefix} ${data.detail || data.error}`);
+    return;
+  }
+
 
     // Nadpis čistě z DB (žádné OWM city)
     if(data._meta){

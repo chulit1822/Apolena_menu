@@ -1,13 +1,8 @@
 <?php 
-    if (isset($_GET['lang']) && !empty($_GET['lang'])) {
-        $jazyk_value = $_GET['lang'];
-    } else {
-        $jazyk_value = "cs";
-        $lang = "cs";
-    }
-
+$jazyk_value = $_GET['lang'] ?? 'cs'; // PHP 7.0+
+    $lang = $jazyk_value;
     $stranka_value = "index.php";
-
+    
     include 'texty.php';
 ?>
 <!doctype html>
@@ -63,15 +58,6 @@
                   </div>
                 </a>
 
-                <!-- Kontakt -->
-                <a class="tile span-2" href="#panel-kontakt" data-panel="panel-kontakt" tabindex="0">
-                  <div class="emoji" aria-hidden="true">☎️</div>
-                  <div>
-                    <div class="title"><?php echo isset($poleTextu[15]) ? $poleTextu[15] : 'Nenašel jsem text'; ?></div>
-                    <div class="desc"><?php echo isset($poleTextu[16]) ? $poleTextu[16] : 'Nenašel jsem text'; ?></div>
-                  </div>
-                </a>
-
                 <!-- Počasí -->
                 <a class="tile" href="#panel-pocasi" data-panel="panel-pocasi" tabindex="0">
                   <div class="emoji" aria-hidden="true">🌦️</div>
@@ -105,6 +91,15 @@
                   <div>
                     <div class="title"><?php echo isset($poleTextu[23]) ? $poleTextu[23] : 'Nenašel jsem text'; ?></div>
                     <div class="desc"><?php echo isset($poleTextu[24]) ? $poleTextu[24] : 'Nenašel jsem text'; ?></div>
+                  </div>
+                </a>
+
+                <!-- Kontakt -->
+                <a class="tile" href="#panel-kontakt" data-panel="panel-kontakt" tabindex="0">
+                  <div class="emoji" aria-hidden="true">☎️</div>
+                  <div>
+                    <div class="title"><?php echo isset($poleTextu[15]) ? $poleTextu[15] : 'Nenašel jsem text'; ?></div>
+                    <div class="desc"><?php echo isset($poleTextu[16]) ? $poleTextu[16] : 'Nenašel jsem text'; ?></div>
                   </div>
                 </a>
             </nav>
@@ -289,7 +284,7 @@
                       <h3><?php echo isset($poleTextu[71]) ? $poleTextu[71] : 'Nenašel jsem text'; ?></h3>
                       <p><?php echo isset($poleTextu[72]) ? $poleTextu[72] : 'Nenašel jsem text'; ?></p>
                   </a>
-                  <a class="item focusable" href="#" tabindex="0">
+                  <a class="item focusable" href="lyze.php?lang=<?php echo urlencode($jazyk_value); ?>&goto=bezky" tabindex="0">
                       <h3><?php echo isset($poleTextu[73]) ? $poleTextu[73] : 'Nenašel jsem text'; ?></h3>
                       <p><?php echo isset($poleTextu[74]) ? $poleTextu[74] : 'Nenašel jsem text'; ?></p>
                   </a>

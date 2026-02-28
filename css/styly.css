@@ -172,10 +172,11 @@ kbd {
   gap:1rem;
   padding:1.2rem 1.4rem 0 1.4rem;
 }
-.panelhead h2{margin:0; font-size:1.5rem;}
-.panel .content{padding:1rem 1.4rem 1.4rem 1.4rem;}
+.panelhead h2{margin:0; font-size:1.3rem;}
+.panel .content{padding:1rem;}
 
 .backbtn{
+  /*display: none;*/
   appearance:none;
   border:0;
   border-radius:12px;
@@ -408,19 +409,30 @@ section#dalsi{
 section.manual-section.lyze{
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 16px;
+  gap: 8px;
   align-items: stretch;
   min-width: 0;
   min-height: 0;
-  padding-bottom: 48px;
 }
 
+section.manual-section.lyze2 { 
+    padding-left: 20px; 
+    padding-right: 20px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    scroll-snap-stop: always; /* TV paging je jistější */
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden;
+}
 /* Nadpis přes obě karty */
 section.manual-section.lyze .lyze-title{
   grid-column: 1 / -1;
-  margin: 10px 0 0;
-  font-size: 30px;
-  font-weight: 700;
+  margin: 0 0 6px 0;
+}
+
+section.manual-section.lyze2 > .lyze-title{
+  margin: 0 0 6px 0 !important;
 }
 
 /* Karta – STEJNÝ STYL JAKO POČASÍ */
@@ -428,12 +440,12 @@ section.manual-section.lyze > .lyze-card{
   width: auto;
   min-width: 0;
   overflow: auto;
-  padding: 10px;
+  padding: 10px 15px 15px;
   border-radius: 10px;
   background: rgba(255,255,255,.04);
   border: 1px solid rgba(255,255,255,.10);
   min-height: 0;
-  max-height: calc(100% - 10px);
+  max-height: calc(100% - 10px); 
 }
 
 /* Skrytí scrollbaru (Android TV) */
@@ -455,10 +467,10 @@ section.manual-section.lyze .lyze-value{
 
 section.manual-section.lyze .lyze-icon{
   display: inline-block;
-  width: 1.6em;
+  width: 10px;
   text-align: center;
-  margin-right: 6px;
-  font-size: 1.1em;
+  margin-right: 15px;
+  font-size: 0.8em;
 }
 
 .lyze-row{
@@ -474,13 +486,13 @@ section.manual-section.lyze .lyze-icon{
 table.areal-teploty{
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 table.areal-teploty th,
 table.areal-teploty td{
   border: 1px solid rgba(255,255,255,.12);
-  padding: 10px 12px;
+  padding: 5px;
   text-align: center;
 }
 
@@ -492,6 +504,7 @@ table.sedm-sloupcu{
   width: 100%;
   table-layout: fixed; /* KLÍČOVÉ */
   border-collapse: collapse;
+  margin: 0px;
 }
 
 table.sedm-sloupcu col.col-double{
@@ -515,8 +528,21 @@ table.sedm-sloupcu td{
 }
 
 .skibus_rad {
-    padding: 10px 0 0px 0;
+    padding: 20px 0 0px 0;
 }
+
+/************************************************/
+/* =====          Styly pro běžky         ===== */
+/************************************************/
+.bezky-link {
+    display:inline-block; 
+    padding:6px 10px 5px 5px; 
+    border-radius:10px; 
+    border:1px solid rgba(255,255,255,.12); 
+    text-decoration:none; 
+    color:inherit;
+}
+
 
 /************************************************/
 /* ===== FINAL LAYOUT FIX (must be last) ===== */
