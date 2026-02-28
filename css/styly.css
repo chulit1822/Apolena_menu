@@ -1,0 +1,558 @@
+:root{
+  /* ZÁKLAD */
+  --bg:        #0b1f1a;   /* velmi tmavá zelená (místo #0b1020) */
+  --bg-soft:   #12352c;   /* měkčí pozadí panelů */
+  --card:      #1a4a3c;   /* dlaždice / karty */
+
+  /* AKCENTY */
+  --accent:    #3fbf9a;   /* světlejší zeleno-tyrkysový akcent */
+  --accent-2:  #7fd9bd;   /* jemný sekundární akcent */
+
+  /* TEXT */
+  --text:      #e6f2ee;   /* světlý text s lehkým zeleným tónem */
+  --muted:     #9fbdb3;   /* tlumený text */
+
+  /* FOKUS (zůstává výrazný pro TV) */
+  --focus:     #F1F2F2;   /* žlutý fokus – schválně ponechán kvůli přístupnosti */
+}
+
+:root{ --topbar-h: 92px; } /* fallback */
+
+html,body{height:100%;}
+html{
+  background:
+    radial-gradient(1200px 800px at 80% -10%,
+      #1f6f59 0%,
+      #12352c 40%,
+      var(--bg) 70%
+    ) fixed;
+}
+
+/* Stránka jako celek nescrolluje – scrolluje jen .main */
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;
+  color:var(--text);
+  height:100%;
+  overflow:hidden;
+}
+
+/* Safe area wrapper for TV overscan */
+.safe{
+  height:100dvh;
+  width:100%;
+  margin:auto;
+  padding:3.5vh 3.5vw;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  overflow: hidden
+}
+
+/* HLAVIČKA – vždy vidět */
+.topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+    padding: 3vh;
+    flex-wrap:wrap;   /* 🔑 dovolí další řádek */
+}
+
+.brand{
+    display:flex; 
+    align-items:center; 
+    gap:1rem;
+}
+
+.brand .logo{
+    width:58px;
+    height:58px;
+    border-radius:16px;
+
+    /* zelený gradient odvozený z #114340 */
+    background:linear-gradient(
+        135deg,
+        #2f8f77,   /* světlejší vršek */
+        #114340    /* hlavní barva */
+    );
+
+    /* odpovídající zelený „glow“ */
+    box-shadow:0 8px 20px rgba(47,143,119,.35);
+
+    padding:2px;
+    box-sizing:border-box;
+}
+
+.brand .logo img {
+    display:block;                  /* 🔑 odstraní “mezery” pod obrázkem */
+    width:100%;
+    height:100%;
+    object-fit:contain;             /* aby se logo nevešlo “na sílu” */    
+}
+
+.titles h1{font-size:2.2rem; line-height:1.1; margin:0; letter-spacing:.3px;}
+.sub{margin-top:.2rem; color:var(--muted); font-size:1.05rem;}
+.clock{font-variant-numeric:tabular-nums; font-size:1.3rem; color:var(--muted);}
+
+.help {
+  flex-basis:100%;  /* 🔑 nový řádek */
+  margin-top:1.2rem;
+  color:var(--muted);
+  font-size:.98rem;
+}
+
+kbd {
+    border:1px solid rgba(255,255,255,.2); 
+    border-bottom-width:2px; 
+    padding:.18rem .45rem; 
+    border-radius:.5rem; 
+    background:rgba(255,255,255,.05);
+}
+
+
+/* Scroll kontejner pro grid */
+.main{
+  flex:1;
+  overflow:auto;
+}
+
+/* GRID */
+.grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; align-content:start; padding: 3vh;}
+@media (max-width:1400px){ .grid{grid-template-columns:repeat(4,1fr);} }
+@media (max-width:1000px){ .grid{grid-template-columns:repeat(3,1fr);} }
+
+.tile{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  gap:.6rem;
+  padding:1.2rem;
+  min-height:5rem;
+  border-radius:18px;
+  text-decoration:none;
+  color:inherit;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0) 30%),
+    linear-gradient(0deg, rgba(255,255,255,.06), rgba(255,255,255,0) 70%),
+    var(--card);
+  box-shadow:0 12px 28px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.07);
+  outline:none;
+  transition:transform .12s ease, box-shadow .12s ease;
+  scroll-margin: 10vh; /* když se bude scrollovat, ať se tile nedostane pod hlavičku */
+}
+.tile:hover{transform:translateY(-2px);}
+.tile:focus,
+.tile:focus-visible{
+  box-shadow:0 0 0 4px var(--focus), 0 12px 28px rgba(0,0,0,.4);
+}
+.tile .title{font-size:1.25rem; font-weight:700; letter-spacing:.2px;}
+.tile .desc{font-size:.95rem; color:var(--muted);}
+.tile .emoji{font-size:2rem; line-height:1;}
+
+.span-2{grid-column:span 2;}
+.span-3{grid-column:span 3;}
+
+/* PANELY (vnitřní stránky) */
+.panel{position:fixed; inset:0; background:rgba(6,10,22,.75); backdrop-filter:blur(6px); display:none;}
+.panel[aria-hidden="false"]{display:flex;}
+.panel .box{
+  margin:auto;
+  width:min(1100px,92vw);
+  max-height:84vh;
+  overflow:auto;
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0)), var(--bg-soft);
+  border-radius:22px;
+  box-shadow:0 16px 40px rgba(0,0,0,.5);
+}
+.panelhead{
+  display:flex;
+  align-items:center;
+  gap:1rem;
+  padding:1.2rem 1.4rem 0 1.4rem;
+}
+.panelhead h2{margin:0; font-size:1.5rem;}
+.panel .content{padding:1rem 1.4rem 1.4rem 1.4rem;}
+
+.backbtn{
+  appearance:none;
+  border:0;
+  border-radius:12px;
+  padding:.7rem 1rem;
+  font-size:1rem;
+  background:#114340;
+  color:#fff;
+  cursor:pointer;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);
+  margin-top: 10px;
+}
+.backbtn:focus,
+.backbtn:focus-visible{outline:4px solid var(--focus);}
+
+/* Seznamy dlaždic uvnitř panelu */
+.list{display:grid; grid-template-columns:repeat(2,1fr); gap:1rem;}
+@media (max-width:900px){.list{grid-template-columns:1fr;}}
+.item{
+  display:block;
+  text-decoration:none;
+  color:inherit;
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0) 40%),
+    linear-gradient(0deg, rgba(255,255,255,.05), rgba(255,255,255,0) 70%),
+    var(--card);
+
+  border-radius:16px;
+  padding:1rem;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.07),
+    0 8px 18px rgba(0,0,0,.25);
+
+  outline:none;
+}
+
+.item:focus,
+.item:focus-visible{box-shadow:0 0 0 4px var(--focus), inset 0 0 0 1px rgba(255,255,255,.07);}
+.item h3{margin:.2rem 0 .6rem;}
+.item p{margin:0; color:var(--muted)}
+
+/*************************************************************/
+/*********        stránky obsahu manuálu       ***************/
+/*************************************************************/
+
+html { 
+    scroll-behavior: smooth; 
+}
+
+section.manual-section { 
+    padding-left: 20px; 
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-top: 5px;
+    scroll-snap-stop: always; /* TV paging je jistější */
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden;
+}
+
+.manual-section:focus {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 2px rgba(241,242,242,.9),
+    0 0 16px rgba(241,242,242,.25);
+  border-radius: 16px;
+}
+
+.QR {
+  display:grid; 
+  grid-template-columns:repeat(2,1fr);
+  gap:1rem;
+}
+
+/*************************************************************/
+/*********      stránka pro obsah vytápění     ***************/
+/*************************************************************/
+.programy {
+    border-collapse: collapse;   /* nahrazuje cellspacing="0" */
+    border: 1px solid #F1F2F2;
+}
+
+table.programy td,
+  table.programy th {
+    border: 1px solid #F1F2F2;
+    text-align: center;
+    padding: 6px;                /* nahrazuje cellpadding="6" */
+    font-size: 0.8rem;
+  }
+  
+  .teplota {
+  display:grid; 
+  grid-template-columns: 10% 90%;
+  gap:1rem;
+}
+
+/*************************************************************/
+/*********      stránka pro obsah počasí     ******************/
+/*************************************************************/
+
+/* Grid – dvě karty vedle sebe */
+section.manual-section.pocasi{
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+  min-width: 0;
+  min-height: 0;
+  padding-bottom: 48px;
+}
+
+/* Nadpis přes obě karty */
+section.manual-section.pocasi .pocasi-title{
+  grid-column: 1 / -1;
+  margin: 10px 0 0;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+/* Karty */
+section.manual-section.pocasi > .pocasi-card{
+  width: auto !important;
+  min-width: 0;
+  overflow: auto;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.10);
+  min-height: 0;
+  max-height: calc(100% - 10px);
+  scroll-snap-align: none;
+}
+
+section.manual-section.pocasi > .pocasi-card::-webkit-scrollbar { width: 0; height: 0; }
+
+/* Detail karta (ikona + text vedle sebe) */
+section.manual-section.pocasi > .pocasi-card.detail{
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+/* Ikony */
+.wicon{ font-size: 80px; line-height: 1; }
+.dicon{ font-size: 48px; line-height: 1; }
+
+/* Teplota */
+.temp{
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+.temp::before{
+  content: "🌡️";
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 0.8em;
+  vertical-align: middle;
+}
+
+/* Texty */
+.meta{
+  color: var(--muted);
+  font-size: 20px;
+}
+.footerline{
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 30px;
+}
+
+/* Další dny */
+.days{ 
+    display: grid; 
+    gap: 5px; 
+}
+
+.row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px;
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 14px;
+  background: rgba(255,255,255,.04);
+}
+.row .l{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+}
+.dname{ font-weight: 800; text-transform: capitalize; }
+.desc{
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 52ch;
+}
+.minmax{
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Pojistka proti horizontálnímu scrollu ve scroll kontejneru 
+.manual-main{ overflow-x: hidden; }*/
+
+section.manual-section.pocasi{
+  padding-bottom: 45px;
+}
+
+section#dalsi{
+  padding-bottom: 10px;   /* původně 20px → −15px */
+}
+
+#dalsi .row{
+  padding: 3px;
+}
+
+/*************************************************************/
+/*********      stránka pro obsah lyže     *******************/
+/*************************************************************/
+
+section.manual-section.lyze{
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+  min-width: 0;
+  min-height: 0;
+  padding-bottom: 48px;
+}
+
+/* Nadpis přes obě karty */
+section.manual-section.lyze .lyze-title{
+  grid-column: 1 / -1;
+  margin: 10px 0 0;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+/* Karta – STEJNÝ STYL JAKO POČASÍ */
+section.manual-section.lyze > .lyze-card{
+  width: auto;
+  min-width: 0;
+  overflow: auto;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.10);
+  min-height: 0;
+  max-height: calc(100% - 10px);
+}
+
+/* Skrytí scrollbaru (Android TV) */
+section.manual-section.lyze > .lyze-card::-webkit-scrollbar{
+  width: 0;
+  height: 0;
+}
+
+/* Vnitřní řádky */
+section.manual-section.lyze .lyze-row{
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+/* Zvýraznění hodnot */
+section.manual-section.lyze .lyze-value{
+  font-weight: 600;
+}
+
+section.manual-section.lyze .lyze-icon{
+  display: inline-block;
+  width: 1.6em;
+  text-align: center;
+  margin-right: 6px;
+  font-size: 1.1em;
+}
+
+.lyze-row{
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+}
+
+.lyze-label{
+  font-weight: 400;
+}
+
+table.areal-teploty{
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+table.areal-teploty th,
+table.areal-teploty td{
+  border: 1px solid rgba(255,255,255,.12);
+  padding: 10px 12px;
+  text-align: center;
+}
+
+table.areal-teploty th{
+  font-weight: 100;
+}
+
+table.sedm-sloupcu{
+  width: 100%;
+  table-layout: fixed; /* KLÍČOVÉ */
+  border-collapse: collapse;
+}
+
+table.sedm-sloupcu col.col-double{
+  width: calc(100% / 7 * 2); /* 2 / 7 */
+}
+
+table.sedm-sloupcu col.col-single{
+  width: calc(100% / 7);       /* 1 / 7 */
+}
+
+table.sedm-sloupcu td{
+  border: 1px solid rgba(255,255,255,.12);
+  padding: 2px;
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.7em;      /* poloviční velikost textu */
+  line-height: 1.2;
+}
+
+.skibus_rad {
+    padding: 10px 0 0px 0;
+}
+
+/************************************************/
+/* ===== FINAL LAYOUT FIX (must be last) ===== */
+/************************************************/
+
+html, body { height: 100%; margin: 0; }
+body { overflow: hidden; }
+
+/* Safe wrapper: full viewport including padding */
+.safe{
+  height: 100dvh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* header takes its natural height */
+.topbar{
+  flex: 0 0 auto;
+}
+
+/* main takes the rest */
+.manual-main{
+  flex: 1 1 auto;
+  min-height: 0;     /* critical */
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-snap-type: y proximity; /* ok */
+  scrollbar-width: none;
+}
+.manual-main::-webkit-scrollbar{ width:0; height:0; }
+
+/* section behaves like "page", but can be taller if needed */
+section.manual-section{
+  scroll-snap-align: start;
+  min-height: 100%;
+  box-sizing: border-box;
+}

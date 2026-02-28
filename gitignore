@@ -1,0 +1,5 @@
+# Ignoruj konfigurační soubor s hesly v podadresáři
+objekty/config.php
+
+# Ignoruj nastavení NetBeans (vždy doporučeno)
+nbproject/

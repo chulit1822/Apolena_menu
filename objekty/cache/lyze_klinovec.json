@@ -1,0 +1,24 @@
+{
+    "_meta": {
+        "fetched_at": 1769860444,
+        "source": "klinovec.cz"
+    },
+    "aktualne": {
+        "updated": "31. ledna 2026, 07:22",
+        "snow_cm": "80-110 cm",
+        "snow_type": "prachový",
+        "status_hours": "09:00-16:00",
+        "night_ski": "18:00 - 21:00 - ST, PÁ, SO",
+        "lifts_open": 15,
+        "slopes_open": 19,
+        "km_open": "23 km",
+        "temp_c": -4.9000000000000003552713678800500929355621337890625,
+        "temp_place": "Horní stanice CineStar Express"
+    },
+    "teploty": {
+        "top_cinestar": -3.600000000000000088817841970012523233890533447265625,
+        "mid": null,
+        "bottom_cinestar": -0.90000000000000002220446049250313080847263336181640625,
+        "updated": "2026-01-31 12:30:09"
+    }
+}
