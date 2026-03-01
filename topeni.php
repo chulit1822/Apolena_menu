@@ -25,63 +25,60 @@ include 'texty.php';
             <?php
                 include 'uvod.php';
             ?>
-            <button class="backbtn" id="backBtn" type="button" aria-label="Zpět">
-                <?php echo $poleTextu[7] ?? 'Nenašel jsem text'; ?>
-            </button>
         </header>
 
         <main class="manual-main" id="manualMain" aria-label="Obsah manuálu">
 
             <!-- Sekce: každá má id = kotva -->
             <section class="manual-section" id="info" tabindex="-1">
-                <h2><?php echo $poleTextu[8] ?? 'Nenašel jsem text'; ?></h2>
+                <h2><?= $poleTextu[8] ?? 'Nemám text' ?></h2>
                 <div>
-                    <?php echo $poleTextu[9] ?? 'Nenašel jsem text'; ?>
+                    <?= $poleTextu[9] ?? 'Nemám text' ?>
                     <br>
-                     - <?php echo $poleTextu[10] ?? 'Nenašel jsem text'; ?>
+                     - <?= $poleTextu[10] ?? 'Nemám text' ?>
                     <br>
-                     - <?php echo $poleTextu[11] ?? 'Nenašel jsem text'; ?>
+                     - <?= $poleTextu[11] ?? 'Nemám text' ?>
                     <br>
                     <br>
-                    <?php echo $poleTextu[12] ?? 'Nenašel jsem text'; ?>
+                    <?= $poleTextu[12] ?? 'Nemám text' ?>
                 </div>
             </section>
 
             <section class="manual-section" id="program1" tabindex="-1">
-                <h2><?php echo $poleTextu[13] ?? 'Nenašel jsem text'; ?></h2>
+                <h2><?= $poleTextu[13] ?? 'Nemám text' ?></h2>
                 <table class = "programy">
                     <thead>
                         <tr>
-                            <th colspan="2"><?php echo $poleTextu[16] ?? 'Nenašel jsem text'; ?></th>
+                            <th colspan="2"><?= $poleTextu[16] ?? 'Nemám text' ?></th>
                             <th rowspan="2" style="vertical-align: middle;">
-                            <?php echo $poleTextu[17] ?? 'Nenašel jsem text'; ?>
+                            <?= $poleTextu[17] ?? 'Nemám text' ?>
                           </th>
                         </tr>
                         <tr>
-                            <th><?php echo $poleTextu[18] ?? 'Nenašel jsem text'; ?></th>
-                            <th><?php echo $poleTextu[19] ?? 'Nenašel jsem text'; ?></th>
+                            <th><?= $poleTextu[18] ?? 'Nemám text' ?></th>
+                            <th><?= $poleTextu[19] ?? 'Nemám text' ?></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><?php echo $poleTextu[20] ?? 'Nenašel jsem text'; ?></td>
-                            <td><?php echo $poleTextu[21] ?? 'Nenašel jsem text'; ?></td>
-                            <td><?php echo $poleTextu[22] ?? 'Nenašel jsem text'; ?>&nbsp;<?php echo $poleTextu[23] ?? 'Nenašel jsem text'; ?></td>
+                            <td><?= $poleTextu[20] ?? 'Nemám text' ?></td>
+                            <td><?= $poleTextu[21] ?? 'Nemám text' ?></td>
+                            <td><?= $poleTextu[22] ?? 'Nemám text' ?>&nbsp;<?= $poleTextu[23] ?? 'Nemám text' ?></td>
                         </tr>
                         <tr>
-                            <td><?php echo $poleTextu[24] ?? 'Nenašel jsem text'; ?></td>
-                            <td><?php echo $poleTextu[25] ?? 'Nenašel jsem text'; ?></td>
-                            <td><?php echo $poleTextu[26] ?? 'Nenašel jsem text'; ?>&nbsp;<?php echo $poleTextu[23] ?? 'Nenašel jsem text'; ?></td>
+                            <td><?= $poleTextu[24] ?? 'Nemám text' ?></td>
+                            <td><?= $poleTextu[25] ?? 'Nemám text' ?></td>
+                            <td><?= $poleTextu[26] ?? 'Nemám text' ?>&nbsp;<?= $poleTextu[23] ?? 'Nemám text' ?></td>
                         </tr>
                         <tr>
-                            <td><?php echo $poleTextu[27] ?? 'Nenašel jsem text'; ?></td>
-                            <td><?php echo $poleTextu[28] ?? 'Nenašel jsem text'; ?></td>
-                            <td><?php echo $poleTextu[29] ?? 'Nenašel jsem text'; ?>&nbsp;<?php echo $poleTextu[23] ?? 'Nenašel jsem text'; ?></td>
+                            <td><?= $poleTextu[27] ?? 'Nemám text' ?></td>
+                            <td><?= $poleTextu[28] ?? 'Nemám text' ?></td>
+                            <td><?= $poleTextu[29] ?? 'Nemám text' ?>&nbsp;<?= $poleTextu[23] ?? 'Nemám text' ?></td>
                         </tr>
                         <tr>
-                            <td><?php echo $poleTextu[30] ?? 'Nenašel jsem text'; ?></td>
-                            <td><?php echo $poleTextu[31] ?? 'Nenašel jsem text'; ?></td>
-                            <td><?php echo $poleTextu[32] ?? 'Nenašel jsem text'; ?>&nbsp;<?php echo $poleTextu[23] ?? 'Nenašel jsem text'; ?></td>
+                            <td><?= $poleTextu[30] ?? 'Nemám text' ?></td>
+                            <td><?= $poleTextu[31] ?? 'Nemám text' ?></td>
+                            <td><?= $poleTextu[32] ?? 'Nemám text' ?>&nbsp;<?= $poleTextu[23] ?? 'Nemám text' ?></td>
                         </tr>
                     </tbody>
                 </table>
@@ -89,69 +86,69 @@ include 'texty.php';
 
 
             <section class="manual-section" id="program2" tabindex="-1">
-                <h2><?php echo $poleTextu[33] ?? 'Nenašel jsem text'; ?></h2>
+                <h2><?= $poleTextu[33] ?? 'Nemám text' ?></h2>
                 <table class = "programy">
                     <thead>
                         <tr>
-                            <th colspan="2"><?php echo $poleTextu[16] ?? 'Nenašel jsem text'; ?></th>
+                            <th colspan="2"><?= $poleTextu[16] ?? 'Nemám text' ?></th>
                             <th rowspan="2" style="vertical-align: middle;">
-                            <?php echo $poleTextu[14] ?? 'Nenašel jsem text'; ?>
+                            <?= $poleTextu[14] ?? 'Nemám text' ?>
                           </th>
                         </tr>
                         <tr>
-                            <th><?php echo $poleTextu[18] ?? 'Nenašel jsem text'; ?></th>
-                            <th><?php echo $poleTextu[19] ?? 'Nenašel jsem text'; ?></th>
+                            <th><?= $poleTextu[18] ?? 'Nemám text' ?></th>
+                            <th><?= $poleTextu[19] ?? 'Nemám text' ?></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><?php echo $poleTextu[34] ?? 'Nenašel jsem text'; ?></td>
-                            <td><?php echo $poleTextu[35] ?? 'Nenašel jsem text'; ?></td>
-                            <td><?php echo $poleTextu[36] ?? 'Nenašel jsem text'; ?>&nbsp;<?php echo $poleTextu[23] ?? 'Nenašel jsem text'; ?></td>
+                            <td><?= $poleTextu[34] ?? 'Nemám text' ?></td>
+                            <td><?= $poleTextu[35] ?? 'Nemám text' ?></td>
+                            <td><?= $poleTextu[36] ?? 'Nemám text' ?>&nbsp;<?= $poleTextu[23] ?? 'Nemám text' ?></td>
                         </tr>
                         <tr>
-                            <td><?php echo $poleTextu[37] ?? 'Nenašel jsem text'; ?></td>
-                            <td><?php echo $poleTextu[38] ?? 'Nenašel jsem text'; ?></td>
-                            <td><?php echo $poleTextu[39] ?? 'Nenašel jsem text'; ?>&nbsp;<?php echo $poleTextu[23] ?? 'Nenašel jsem text'; ?></td>
+                            <td><?= $poleTextu[37] ?? 'Nemám text' ?></td>
+                            <td><?= $poleTextu[38] ?? 'Nemám text' ?></td>
+                            <td><?= $poleTextu[39] ?? 'Nemám text' ?>&nbsp;<?= $poleTextu[23] ?? 'Nemám text' ?></td>
                         </tr>
                         <tr>
-                            <td><?php echo $poleTextu[40] ?? 'Nenašel jsem text'; ?></td>
-                            <td><?php echo $poleTextu[41] ?? 'Nenašel jsem text'; ?></td>
-                            <td><?php echo $poleTextu[42] ?? 'Nenašel jsem text'; ?>&nbsp;<?php echo $poleTextu[23] ?? 'Nenašel jsem text'; ?></td>
+                            <td><?= $poleTextu[40] ?? 'Nemám text' ?></td>
+                            <td><?= $poleTextu[41] ?? 'Nemám text' ?></td>
+                            <td><?= $poleTextu[42] ?? 'Nemám text' ?>&nbsp;<?= $poleTextu[23] ?? 'Nemám text' ?></td>
                         </tr>
                         <tr>
-                            <td><?php echo $poleTextu[43] ?? 'Nenašel jsem text'; ?></td>
-                            <td><?php echo $poleTextu[44] ?? 'Nenašel jsem text'; ?></td>
-                            <td><?php echo $poleTextu[45] ?? 'Nenašel jsem text'; ?>&nbsp;<?php echo $poleTextu[23] ?? 'Nenašel jsem text'; ?></td>
+                            <td><?= $poleTextu[43] ?? 'Nemám text' ?></td>
+                            <td><?= $poleTextu[44] ?? 'Nemám text' ?></td>
+                            <td><?= $poleTextu[45] ?? 'Nemám text' ?>&nbsp;<?= $poleTextu[23] ?? 'Nemám text' ?></td>
                         </tr>
                     </tbody>
                 </table>
             </section>            
 
             <section class="manual-section" id="teplota" tabindex="-1">
-                <h2><?php echo $poleTextu[46] ?? 'Nenašel jsem text'; ?> </h2>
+                <h2><?= $poleTextu[46] ?? 'Nemám text' ?> </h2>
                 <br>
                 <div class = teplota>
                     <img src="objekty/hlavice.jpg" width="90" height="137" alt="regulační hlavice"/>
-                    <div><?php echo $poleTextu[47] ?? 'Nenašel jsem text'; ?></div>
+                    <div><?= $poleTextu[47] ?? 'Nemám text' ?></div>
                 </div>
             </section>
 
             <section class="manual-section" id="tipy" tabindex="-1">
-                <h2><?php echo $poleTextu[48] ?? 'Nenašel jsem text'; ?> 💡</h2>
+                <h2><?= $poleTextu[48] ?? 'Nemám text' ?> 💡</h2>
                 <br>
                 <div>
                     <div>
-                        <strong><?php echo $poleTextu[49] ?? 'Nenašel jsem text'; ?></strong>
-                        <?php echo $poleTextu[50] ?? 'Nenašel jsem text'; ?>
+                        <strong><?= $poleTextu[49] ?? 'Nemám text' ?></strong>
+                        <?= $poleTextu[50] ?? 'Nemám text' ?>
                     </div>
                     <div>
-                        <strong><?php echo $poleTextu[51] ?? 'Nenašel jsem text'; ?></strong>
-                        <?php echo $poleTextu[52] ?? 'Nenašel jsem text'; ?>
+                        <strong><?= $poleTextu[51] ?? 'Nemám text' ?></strong>
+                        <?= $poleTextu[52] ?? 'Nemám text' ?>
                     </div>
                     <div>
-                        <strong><?php echo $poleTextu[53] ?? 'Nenašel jsem text'; ?></strong>
-                        <?php echo $poleTextu[54] ?? 'Nenašel jsem text'; ?>
+                        <strong><?= $poleTextu[53] ?? 'Nemám text' ?></strong>
+                        <?= $poleTextu[54] ?? 'Nemám text' ?>
                     </div>
                     <br>
                 </div>

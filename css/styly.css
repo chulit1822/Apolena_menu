@@ -1,4 +1,4 @@
-:root{
+:root {
   /* ZÁKLAD */
   --bg:        #0b1f1a;   /* velmi tmavá zelená (místo #0b1020) */
   --bg-soft:   #12352c;   /* měkčí pozadí panelů */
@@ -16,7 +16,17 @@
   --focus:     #F1F2F2;   /* žlutý fokus – schválně ponechán kvůli přístupnosti */
 }
 
-:root{ --topbar-h: 92px; } /* fallback */
+:root { --topbar-h: 92px; } /* fallback */
+
+/* NOVÝ KÓD - ZCELA SAMOSTATNĚ ZDE */
+*, *::before, *::after {
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none !important;
+}
+
+::-moz-focus-inner {
+    border: 0; 
+}
 
 html,body{height:100%;}
 html{
@@ -189,7 +199,9 @@ kbd {
   margin-top: 10px;
 }
 .backbtn:focus,
-.backbtn:focus-visible{outline:4px solid var(--focus);}
+.backbtn:focus-visible{
+    outline:4px solid var(--focus)!important;
+}
 
 /* Seznamy dlaždic uvnitř panelu */
 .list{display:grid; grid-template-columns:repeat(2,1fr); gap:1rem;}
@@ -543,6 +555,12 @@ table.sedm-sloupcu td{
     color:inherit;
 }
 
+.bezky-row:focus {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+    outline: 4px solid #ffcc00 !important; /* Zářivá barva pro test */
+    outline-offset: -4px;
+    scroll-margin-top: 150px; /* Uprav podle výšky tvé horní lišty */
+}
 
 /************************************************/
 /* ===== FINAL LAYOUT FIX (must be last) ===== */

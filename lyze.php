@@ -2,8 +2,8 @@
 declare(strict_types=1);
 
 /* =========================================================
-   ZÁKLAD
-========================================================= */
+                             ZÁKLAD
+   ========================================================= */
 $jazyk_value   = (isset($_GET['lang']) && $_GET['lang'] !== '') ? $_GET['lang'] : 'cs';
 $stranka_value = "lyze.php";
 
@@ -19,7 +19,7 @@ function fmtTs($ts): string {
 /* =========================================================
    DB: texty + běžky trasy
    (NEPOUŽÍVÁME include texty.php, protože ti to dřív nullovalo $pdo)
-========================================================= */
+   ========================================================= */
 require 'objekty/config.php';
 
 $servername = $config['db_host'];
@@ -120,8 +120,8 @@ if ($bezkyDetail) {
 }
 
 /* =========================================================
-   STANDARD VIEW (celý manuál)
-========================================================= */
+                STANDARD VIEW (celý manuál)
+   ========================================================= */
 ?>
 <!doctype html>
 <html>
@@ -133,18 +133,15 @@ if ($bezkyDetail) {
 <div class="safe">
     <header class="topbar" aria-label="Hlavička">
         <?php include 'uvod.php'; ?>
-        <button class="backbtn" id="backBtn" type="button" aria-label="Nenašel jsem text">
-            <?php echo $poleTextu[7] ?? 'Nenašel jsem text'; ?>
-        </button>
     </header>
 
     <main class="manual-main" id="manualMain" aria-label="Obsah manuálu">
 
         <!-- SEKCE LYŽE -->
-        <section class="manual-section lyze" id="lyze" tabindex="-1">
+        <section class="manual-section lyze" id="lyze" tabindex="0">
 
             <h2 class="lyze-title">
-                <?php echo $poleTextu[8] ?? 'Nenašel jsem text'; ?>
+                <?= $poleTextu[8] ?? 'Nemám text' ?>
                 <?php if (!empty($meta['fetched_at'])): ?>
                     <span style="opacity:.7;font-weight:400">
                         (<?php echo h(fmtTs($meta['fetched_at'])); ?>)
@@ -257,7 +254,7 @@ if ($bezkyDetail) {
         </section>
 
         <!-- SEKCE SKIBUS -->
-        <section class="manual-section lyze2" id="skibus" tabindex="-1">
+        <section class="manual-section lyze2" id="skibus" tabindex="0">
 
             <h2><?php echo $poleTextu[22] ?? 'Skibus'; ?></h2>
 
@@ -321,26 +318,26 @@ if ($bezkyDetail) {
         </section>
 
         <!-- SEKCE BĚŽKY -->
-        <section class="manual-section lyze2" id="bezky" tabindex="-1">
+        <section class="manual-section lyze2" id="bezky" tabindex="0">
 
-            <h2 class="lyze-title"><?php echo $poleTextu[48] ?? 'Nenašel jsem text'; ?></h2>
+            <h2 class="lyze-title"><?= $poleTextu[48] ?? 'Nemám text' ?></h2>
 
             <div class="lyze-card" aria-label="Doporučené trasy (rekreace / rodiny)">
 
                 <?php if (empty($bezkyTrasy)): ?>
                     <div class="lyze-row">
                         <span class="lyze-icon">⚠️</span>
-                        <span class="lyze-label"><?php echo $poleTextu[49] ?? 'Nenašel jsem text'; ?></span>
+                        <span class="lyze-label"><?= $poleTextu[49] ?? 'Nemám text' ?></span>
                     </div>
                 <?php else: ?>
                     <table class="bezky-table" aria-label="Seznam běžkařských tras" style="width:100%; border-collapse:collapse">
                     <thead>
                         <tr style="opacity:.75">
-                            <th style="text-align:left; padding:8px"><?php echo $poleTextu[50] ?? 'Nenašel jsem text'; ?></th>
-                            <th style="text-align:left; padding:8px"><?php echo $poleTextu[51] ?? 'Nenašel jsem text'; ?></th>
-                            <th style="text-align:left; padding:8px"><?php echo $poleTextu[52] ?? 'Nenašel jsem text'; ?></th>
-                            <th style="text-align:left; padding:8px"><?php echo $poleTextu[53] ?? 'Nenašel jsem text'; ?></th>
-                            <th style="text-align:left; padding:8px"><?php echo $poleTextu[54] ?? 'Nenašel jsem text'; ?></th>
+                            <th style="text-align:left; padding:8px"><?= $poleTextu[50] ?? 'Nemám text' ?></th>
+                            <th style="text-align:left; padding:8px"><?= $poleTextu[51] ?? 'Nemám text' ?></th>
+                            <th style="text-align:left; padding:8px"><?= $poleTextu[52] ?? 'Nemám text' ?></th>
+                            <th style="text-align:left; padding:8px"><?= $poleTextu[53] ?? 'Nemám text' ?></th>
+                            <th style="text-align:left; padding:8px"><?= $poleTextu[54] ?? 'Nemám text' ?></th>
                         </tr>
                     </thead>
 
@@ -376,66 +373,6 @@ if ($bezkyDetail) {
     </main>
 </div>
 
-<script>
-(function(){
-  const rows = Array.from(document.querySelectorAll('.bezky-row[data-href]'));
-  if (!rows.length) return;
-
-  function openRow(row){
-    const href = row.dataset.href;
-    if (href) window.location.href = href;
-  }
-
-  function focusRow(i){
-    if (i < 0) i = 0;
-    if (i >= rows.length) i = rows.length - 1;
-    rows[i].focus();
-  }
-
-  // aby po příchodu na #bezky byl fokus na prvním řádku
-  if (location.hash === '#bezky') {
-    setTimeout(() => focusRow(0), 0);
-  }
-
-  rows.forEach((row, idx) => {
-    row.addEventListener('click', (e) => {
-      // klik na odkaz necháme být
-      if (e.target && e.target.closest && e.target.closest('a')) return;
-      openRow(row);
-    });
-
-    row.addEventListener('keydown', (e) => {
-      const k = e.key;
-      const code = e.keyCode || 0;
-
-      // OK na Android TV bývá keyCode 23 (DPAD_CENTER)
-      const isOk = (k === 'Enter' || k === ' ' || code === 13 || code === 23);
-
-      // Šipky: na TV často používají šipky k navigaci; přepneme řádek
-      const isDown = (k === 'ArrowDown' || code === 40 || k === 'ArrowRight' || code === 39);
-      const isUp   = (k === 'ArrowUp'   || code === 38 || k === 'ArrowLeft'  || code === 37);
-
-      if (isOk) {
-        e.preventDefault();
-        openRow(row);
-        return;
-      }
-
-      if (isDown) {
-        e.preventDefault();
-        focusRow(idx + 1);
-        return;
-      }
-
-      if (isUp) {
-        e.preventDefault();
-        focusRow(idx - 1);
-        return;
-      }
-    });
-  });
-})();
-</script>
-
+    
 </body>
 </html>

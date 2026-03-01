@@ -24,42 +24,39 @@ include 'texty.php';
             <?php
                 include 'uvod.php';
             ?>
-            <button class="backbtn" id="backBtn" type="button" aria-label="Zpět">
-                <?php echo $poleTextu[7] ?? 'Nenašel jsem text'; ?>
-            </button>
         </header>
         
         <main class="manual-main" id="manualMain" aria-label="Obsah manuálu">
 
             <!-- Sekce: každá má id = kotva -->
             <section class="manual-section" id="heslo" tabindex="-1">
-                <h2><?php echo $poleTextu[8] ?? 'Nenašel jsem text'; ?></h2>
+                <h2><?= $poleTextu[8] ?? 'Nemám text' ?></h2>
                 <div>
-                    <?php echo $poleTextu[9] ?? 'Nenašel jsem text'; ?>
-                    <strong><?php echo $poleTextu[10] ?? 'Nenašel jsem text'; ?></strong>
+                    <?= $poleTextu[9] ?? 'Nemám text' ?>
+                    <strong><?= $poleTextu[10] ?? 'Nemám text' ?></strong>
                 </div>
             </section>
 
             <section class="manual-section" id="SSID" tabindex="-1">
-                <h2><?php echo $poleTextu[11] ?? 'Nenašel jsem text'; ?></h2>
+                <h2><?= $poleTextu[11] ?? 'Nemám text' ?></h2>
                 <div>
-                    <?php echo $poleTextu[12] ?? 'Nenašel jsem text'; ?>
-                    <strong><?php echo $poleTextu[13] ?? 'Nenašel jsem text'; ?></strong>
-                    <?php echo $poleTextu[14] ?? 'Nenašel jsem text'; ?>
-                    <strong><?php echo $poleTextu[15] ?? 'Nenašel jsem text'; ?></strong>
-                    <?php echo $poleTextu[16] ?? 'Nenašel jsem text'; ?>
+                    <?= $poleTextu[12] ?? 'Nemám text' ?>
+                    <strong><?= $poleTextu[13] ?? 'Nemám text' ?></strong>
+                    <?= $poleTextu[14] ?? 'Nemám text' ?>
+                    <strong><?= $poleTextu[15] ?? 'Nemám text' ?></strong>
+                    <?= $poleTextu[16] ?? 'Nemám text' ?>
                 </div>
             </section>
 
             <section class="manual-section" id="sdileni" tabindex="-1">
-                <h2><?php echo $poleTextu[17] ?? 'Nenašel jsem text'; ?></h2>
+                <h2><?= $poleTextu[17] ?? 'Nemám text' ?></h2>
                 <br>
                 <div class="QR">
-                    <div><?php echo $poleTextu[18] ?? 'Nenašel jsem text'; ?></div>
-                    <div><?php echo $poleTextu[19] ?? 'Nenašel jsem text'; ?></div>
-                    <div><img src="objekty/qr_apolena_24g.png" width="130px" height="130px" alt="QR Apolena 2.4 GHz"/></div>
-                    <div><img src="objekty/qr_apolena_5g.png" width="130px" height="130px" alt="QR Apolena 5 GHz"/></div>
-                </div>
+                    <div style="text-align: center;"><?= $poleTextu[18] ?? 'Nemám text' ?></div>
+                    <div style="text-align: center;"><?= $poleTextu[19] ?? 'Nemám text' ?></div>
+                    <div style="text-align: center;"><img src="objekty/qr_apolena_24g.png" width="150px" height="130px" alt="QR Apolena 2.4 GHz"/></div>
+                    <div style="text-align: center;"><img src="objekty/qr_apolena_5g.png" width="150px" height="130px" alt="QR Apolena 5 GHz"/></div>
+                </div>            
             </section>
 
         </main>

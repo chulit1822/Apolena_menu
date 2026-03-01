@@ -23,9 +23,6 @@ include 'texty.php';
             <?php
                 include 'uvod.php';
             ?>
-            <button class="backbtn" id="backBtn" type="button" aria-label="Zpět">
-                <?php echo $poleTextu[7] ?? 'Nenašel jsem text'; ?>
-            </button>
         </header>
         <main class="manual-main" id="manualMain" aria-label="Obsah manuálu">
 

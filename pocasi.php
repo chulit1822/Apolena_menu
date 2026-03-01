@@ -44,59 +44,56 @@ $W = [
 
 <body>
 <div class="safe">
-  <header class="topbar" aria-label="Hlavička">
-    <?php include 'uvod.php'; ?>
-    <button class="backbtn" id="backBtn" type="button" aria-label="Zpět">
-      <?php echo $poleTextu[7] ?? 'Nenašel jsem text'; ?>
-    </button>
-  </header>
+    <header class="topbar" aria-label="Hlavička">
+        <?php include 'uvod.php'; ?>
+    </header>
 
-  <main class="manual-main" id="manualMain" aria-label="Obsah manuálu">
+    <main class="manual-main" id="manualMain" aria-label="Obsah manuálu">
 
-    <!-- DNES -->
-    <section class="manual-section pocasi" id="dnes" tabindex="-1">
-        <h2 class="pocasi-title" id="cityLine"></h2>
+        <!-- DNES -->
+        <section class="manual-section pocasi" id="dnes" tabindex="-1">
+            <h2 class="pocasi-title" id="cityLine"></h2>
+
+                <div class="pocasi-card main">
+                    <div class="footerline" id="todayDate">—</div>
+                    <div class="temp" id="todayTemp">—</div>
+                </div>
+
+                <div class="pocasi-card detail">
+                    <div class="wicon" id="todayIcon">🌡️</div>
+                    <div class="pocasi-detail-text">
+                        <div class="meta" id="todayDesc">—</div>
+                        <div class="meta" id="todayWind">—</div>
+                    </div>
+                </div>
+        </section>
+
+        <!-- ZITRA -->
+        <section class="manual-section pocasi" id="zitra" tabindex="-1">
+          <h2 class="pocasi-title"><?php echo $poleTextu[$T['tomorrow']] ?? 'Zítra'; ?></h2>
 
             <div class="pocasi-card main">
-                <div class="footerline" id="todayDate">—</div>
-                <div class="temp" id="todayTemp">—</div>
+                <div class="footerline" id="tomDate">—</div>
+                <div class="temp" id="tomTemp">—</div>
             </div>
 
             <div class="pocasi-card detail">
-                <div class="wicon" id="todayIcon">🌡️</div>
+                <div class="wicon" id="tomIcon">🌡️</div>
                 <div class="pocasi-detail-text">
-                    <div class="meta" id="todayDesc">—</div>
-                    <div class="meta" id="todayWind">—</div>
+                    <div class="meta" id="tomDesc">—</div>
+                    <div class="meta" id="tomWind">—</div>
                 </div>
             </div>
-    </section>
+        </section>
 
-    <!-- ZITRA -->
-    <section class="manual-section pocasi" id="zitra" tabindex="-1">
-      <h2 class="pocasi-title"><?php echo $poleTextu[$T['tomorrow']] ?? 'Zítra'; ?></h2>
+        <!-- DALSI DNY -->
+        <section class="manual-section" id="vyhled" tabindex="-1">
+            <h2 class="pocasi-title"><?php echo $poleTextu[$T['next_days']] ?? 'Další dny'; ?></h2>
+            <div class="days" id="longDays"></div>
+        </section>
 
-        <div class="pocasi-card main">
-            <div class="footerline" id="tomDate">—</div>
-            <div class="temp" id="tomTemp">—</div>
-        </div>
-
-        <div class="pocasi-card detail">
-            <div class="wicon" id="tomIcon">🌡️</div>
-            <div class="pocasi-detail-text">
-                <div class="meta" id="tomDesc">—</div>
-                <div class="meta" id="tomWind">—</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- DALSI DNY -->
-    <section class="manual-section" id="vyhled" tabindex="-1">
-        <h2 class="pocasi-title"><?php echo $poleTextu[$T['next_days']] ?? 'Další dny'; ?></h2>
-        <div class="days" id="longDays"></div>
-    </section>
-
-    <!-- STATUS (volitelně) -->
-    <div id="status" style="display:none"></div>
+        <!-- STATUS (volitelně) -->
+        <div id="status" style="display:none"></div>
 
   </main>
 </div>
