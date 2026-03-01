@@ -1,7 +1,6 @@
 /* navigace.js
  * - Android TV / klávesová navigace
  * - Index (grid + panely) + Manuál (sekce na celou výšku)
- * - Měří --topbar-h a hlavně --main-h (výška okna pro sekce)
  */
 (function () {
   // ================= CLOCK =================
@@ -10,8 +9,8 @@
       var el = document.getElementById('clock');
       if (!el) return;
       var d = new Date();
-      var hh = String(d.getHours()).padStart(2, '0');
-      var mm = String(d.getMinutes()).padStart(2, '0');
+      var hh = String(d.getHours()); if (hh.length < 2) hh = '0' + hh;
+      var mm = String(d.getMinutes()); if (mm.length < 2) mm = '0' + mm;
       el.textContent = hh + ':' + mm;
     }
     tick();
@@ -38,6 +37,7 @@
     window.location.href = 'index.php?lang=' + encodeURIComponent(lang);
   }
 
+  // Android TV mapping
   function keyDir(e) {
     var k = e.key, c = e.keyCode;
     if (k === 'ArrowLeft'  || c === 21) return 'left';
@@ -47,17 +47,14 @@
     return null;
   }
   
-  // ROZŠÍŘENÁ DETEKCE ZPĚT
-  function isBackKey(e) { 
-    return e.keyCode === 4 || e.keyCode === 27 || e.keyCode === 8 || e.key === 'Escape' || e.key === 'Backspace'; 
-  }
-  
+  function isBackKey(e) { return e.key === 'Escape' || e.keyCode === 27 || e.keyCode === 4; }
   function isEnterKey(e){ return e.key === 'Enter' || e.keyCode === 13 || e.keyCode === 23 || e.keyCode === 66; }
 
   // ================= LAYOUT VARS =================
   function initLayoutVars() {
     var topbar = document.querySelector('.topbar');
     var main = document.getElementById('manualMain') || document.querySelector('.manual-main');
+
     function setVars() {
       if (topbar) {
         var th = Math.round(topbar.getBoundingClientRect().height);
@@ -68,6 +65,7 @@
         if (mh > 0) document.documentElement.style.setProperty('--main-h', mh + 'px');
       }
     }
+
     setVars();
     window.addEventListener('resize', setVars);
     return { setVars: setVars };
@@ -76,31 +74,35 @@
   // ================= INDEX (grid + panels) =================
   function initIndexNav() {
     var grid = document.getElementById('grid');
-    var main = document.getElementById('main');
     if (!grid) return null;
 
     function safeFocus(el) {
       if (!el) return;
+      
+      // 1. Nastavíme focus, ale zakážeme ošklivý trhavý skok prohlížeče
       try { el.focus({ preventScroll: true }); } catch (_) { el.focus(); }
-      ensureVisible(el);
+      
+      // 2. Plynule odrolujeme tak, aby byl prvek uprostřed obrazovky
+      if (typeof el.scrollIntoView === 'function') {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
+    
+    // Inicializační focus na první dlaždici po načtení
+    setTimeout(function() {
+      var firstTile = document.querySelector('.tile');
+      if (firstTile) safeFocus(firstTile);
+    }, 100);
 
-    function ensureVisible(el) {
-      if (!el || !main) return;
-      var r = el.getBoundingClientRect();
-      var c = main.getBoundingClientRect();
-      var pad = 16;
-      if (r.top < c.top + pad) main.scrollTop -= (c.top + pad - r.top);
-      else if (r.bottom > c.bottom - pad) main.scrollTop += (r.bottom - (c.bottom - pad));
+    function panelOpen() {
+      return document.querySelector('.panel[aria-hidden="false"]');
     }
-
-    function panelOpen() { return document.querySelector('.panel[aria-hidden="false"]'); }
 
     function openPanel(panelId) {
       var p = document.getElementById(panelId);
       if (!p) return;
       p.setAttribute('aria-hidden', 'false');
-      var first = p.querySelector('[data-close]') || p.querySelector('a,button,[tabindex]:not([tabindex="-1"])');
+      var first = p.querySelector('.item.focusable') || p.querySelector('[data-close]');
       setTimeout(function() { safeFocus(first); }, 50);
     }
 
@@ -108,162 +110,138 @@
       if (!p) return;
       p.setAttribute('aria-hidden', 'true');
       var tileId = p.id.replace('panel-', '');
-      var trigger = document.querySelector('[data-panel="panel-' + tileId + '"]') || grid.querySelector('.tile');
+      var trigger = document.querySelector('[data-panel="panel-' + tileId + '"]');
       if (trigger) safeFocus(trigger);
     }
 
+    document.addEventListener('click', function(e) {
+      var closeBtn = e.target.closest('[data-close]');
+      if (closeBtn) {
+        var p = closeBtn.closest('.panel');
+        if (p) closePanel(p);
+      }
+    });
+
     function getFocusables(scope) {
-      if (!scope) return [];
       return Array.prototype.slice.call(
-        scope.querySelectorAll('a.tile, a.item, .panel[aria-hidden="false"] a, .panel[aria-hidden="false"] button, .panel[aria-hidden="false"] [tabindex]:not([tabindex="-1"])')
+        scope.querySelectorAll('a.tile, a.item, button[data-close], [tabindex]:not([tabindex="-1"])')
       ).filter(isFocusable);
     }
 
-    function center(rect) { return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2, w: rect.width, h: rect.height }; }
-
     function pickNext(current, candidates, dir) {
-      var cr = center(current.getBoundingClientRect());
+      var cr = current.getBoundingClientRect();
       var best = null, bestScore = Infinity;
+      var tolerance = 10; 
+      
       for (var i = 0; i < candidates.length; i++) {
         var el = candidates[i];
         if (el === current) continue;
-        var er = center(el.getBoundingClientRect());
-        var dx = er.x - cr.x, dy = er.y - cr.y;
-        if (dir === 'left'  && dx >= -1) continue;
-        if (dir === 'right' && dx <=  1) continue;
-        if (dir === 'up'    && dy >= -1) continue;
-        if (dir === 'down'  && dy <=  1) continue;
-        var adx = Math.abs(dx), ady = Math.abs(dy);
-        var primary = (dir === 'left' || dir === 'right') ? adx : ady;
-        var cross   = (dir === 'left' || dir === 'right') ? ady : adx;
-        if (dir === 'left' || dir === 'right') { if (ady > Math.max(18, cr.h * 0.55)) cross *= 6; }
-        if (dir === 'up' || dir === 'down') { if (adx > Math.max(18, cr.w * 0.55)) cross *= 2.5; }
-        var score = primary + cross * 0.8;
-        if (score < bestScore) { bestScore = score; best = el; }
+        
+        var er = el.getBoundingClientRect();
+        
+        // Středy pro určení čistého směru
+        var cx = cr.left + cr.width / 2;
+        var ex = er.left + er.width / 2;
+        
+        // Určení, zda sdílí stejný řádek (overlapV) nebo stejný sloupec (overlapH)
+        var overlapV = !(er.bottom - tolerance <= cr.top || er.top + tolerance >= cr.bottom);
+        var overlapH = !(er.right - tolerance <= cr.left || er.left + tolerance >= cr.right);
+        
+        var valid = false;
+        var score = 0;
+
+        // Pohyb DOPRAVA/DOLEVA musí sdílet řádek!
+        if (dir === 'right' && ex > cx && overlapV) {
+            valid = true;
+            score = er.left - cr.right;
+        } 
+        else if (dir === 'left' && ex < cx && overlapV) {
+            valid = true;
+            score = cr.left - er.right;
+        } 
+        // Pohyb DOLŮ/NAHORU ignoruje řádky, hlídá vertikální polohu
+        else if (dir === 'down' && er.top >= cr.top + (cr.height / 2)) {
+            valid = true;
+            var penalty = overlapH ? 0 : 5000; // Drastická výhoda pro prvky pod sebou
+            score = (er.top - cr.bottom) + Math.abs(ex - cx) + penalty;
+        } 
+        else if (dir === 'up' && er.bottom <= cr.top + (cr.height / 2)) {
+            valid = true;
+            var penalty = overlapH ? 0 : 5000;
+            score = (cr.top - er.bottom) + Math.abs(ex - cx) + penalty;
+        }
+
+        if (valid && score < bestScore) {
+          bestScore = score;
+          best = el;
+        }
       }
       return best;
     }
-
+    
     function handleKey(e) {
       var dir = keyDir(e);
       var p = panelOpen();
 
-      // KLÍČOVÁ OPRAVA ZPĚT NA INDEXU
       if (isBackKey(e)) {
-        e.preventDefault(); 
-        if (p) { 
-          closePanel(p); 
-        } else {
-          console.log("Back blocked to stay in app");
-        }
-        return true; 
+        if (p) { e.preventDefault(); closePanel(p); return true; }
+        return false;
       }
 
       if (isEnterKey(e)) {
         if (!p) {
           var el = document.activeElement;
-          if (el && el.classList && el.classList.contains('tile') && el.dataset.panel) {
+          if (el && el.dataset.panel) {
             e.preventDefault();
             openPanel(el.dataset.panel);
             return true;
           }
         }
-        return false;
+        return false; 
       }
 
       if (!dir) return false;
+      
       var scope = p ? p : grid;
       var focusables = getFocusables(scope);
       var current = document.activeElement;
+
       if (!current || focusables.indexOf(current) === -1) {
         if (focusables[0]) { e.preventDefault(); safeFocus(focusables[0]); return true; }
         return false;
       }
-      var next = pickNext(current, focusables, dir);
-      if (next) { e.preventDefault(); safeFocus(next); return true; }
-      return false;
-    }
 
-    window.addEventListener('load', function () {
-      if (main) main.scrollTop = 0;
-      var firstTile = grid.querySelector('.tile');
-      if (firstTile) {
-        setTimeout(function() { safeFocus(firstTile); }, 150);
+      var next = pickNext(current, focusables, dir);
+      
+      // ZDE JE KLÍČOVÁ ZMĚNA
+      // I když se prvek nenajde (jsme na konci řádku u span-2), natvrdo zablokujeme 
+      // prohlížeč, aby si neudělal onen divoký skok jinam.
+      e.preventDefault(); 
+      
+      if (next) { 
+          safeFocus(next); 
       }
-    });
+      return true;
+    }
 
     return { handleKey: handleKey };
   }
 
-  // ================= MANUAL (sections) =================
-  function initManualNav(layout) {
-    var main = document.getElementById('manualMain') || document.querySelector('.manual-main');
-    var backBtn = document.getElementById('backBtn');
-    var sections = Array.prototype.slice.call(document.querySelectorAll('.manual-section'));
-    if (!main && sections.length === 0 && !backBtn) return null;
-
-    function scrollToSectionTop(el) {
-      if (!el || !main) return;
-      var mainRect = main.getBoundingClientRect();
-      var elRect = el.getBoundingClientRect();
-      main.scrollTop = main.scrollTop + (elRect.top - mainRect.top);
-    }
-
-    function focusEl(el) {
-      if (!el) return;
-      try { el.focus({ preventScroll: true }); } catch (_) { try { el.focus(); } catch (_) {} }
-      scrollToSectionTop(el);
-    }
-
+  // ================= MANUAL =================
+  function initManualNav() {
     function goBack() {
-      if (history.length > 1) history.back();
-      else goIndexFallback();
-    }
-
-    // OPRAVA PRO KLIK NA TLAČÍTKO ZPĚT
-    if (backBtn) {
-        backBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            goBack();
-        });
-    }
-
-    function focusSectionByOffset(offset) {
-      var current = document.activeElement;
-      var idxNow = sections.indexOf(current);
-      if (idxNow === -1) {
-        if (offset < 0 && backBtn) focusEl(backBtn);
-        else if (sections[0]) focusEl(sections[0]);
-        return;
+      var isIndex = window.location.pathname.endsWith('index.php') || window.location.pathname === '/';
+      if (!isIndex && history.length > 1) {
+        history.back();
+      } else if (!isIndex) {
+        goIndexFallback();
       }
-      var idxNext = idxNow + offset;
-      if (idxNext < 0) { if (backBtn) focusEl(backBtn); }
-      else if (idxNext < sections.length) { focusEl(sections[idxNext]); }
     }
-
+    
     function handleKey(e) {
-      var dir = keyDir(e);
-      
-      // KLÍČOVÁ OPRAVA ZPĚT V MANUÁLU
-      if (isBackKey(e)) { 
-        e.preventDefault(); 
-        goBack(); 
-        return true; 
-      }
-      
-      if (dir === 'up')   { e.preventDefault(); focusSectionByOffset(-1); return true; }
-      if (dir === 'down') { e.preventDefault(); focusSectionByOffset( 1); return true; }
+      if (isBackKey(e)) { e.preventDefault(); goBack(); return true; }
       return false;
     }
-
-    window.addEventListener('load', function () {
-      setTimeout(function() {
-        if (layout) layout.setVars();
-        if (backBtn) focusEl(backBtn);
-        else if (sections[0]) focusEl(sections[0]);
-      }, 200);
-    });
-
     return { handleKey: handleKey };
   }
 
@@ -273,14 +251,13 @@
 
   window.addEventListener('load', function () {
     initClock();
-    var layout = initLayoutVars();
+    initLayoutVars();
     indexNav = initIndexNav();
-    manualNav = initManualNav(layout);
+    manualNav = initManualNav();
   });
 
   document.addEventListener('keydown', function (e) {
     if (indexNav && indexNav.handleKey(e)) return;
     if (manualNav && manualNav.handleKey(e)) return;
   }, true);
-
 })();
